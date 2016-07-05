@@ -27,6 +27,7 @@ void APickup::BeginPlay()
 void APickup::WasPicked_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("Default Pickup called"));
+	PickupMesh->SetSimulatePhysics(false);
 	PickupMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	PickupMesh->SetEnableGravity(false);
 	PickupMesh->SetConstraintMode(EDOFMode::None);
@@ -35,6 +36,7 @@ void APickup::WasPicked_Implementation()
 void APickup::WasDropped_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("Default Drop called"));
+	PickupMesh->SetSimulatePhysics(true);
 	PickupMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	PickupMesh->SetEnableGravity(true);
 	PickupMesh->SetConstraintMode(EDOFMode::Default);
