@@ -35,6 +35,11 @@ public:
 
 	void WasDropped_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Pickup")
+		void WasStored();
+
+	void WasStored_Implementation();
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))

@@ -31,6 +31,7 @@ void APickup::WasPicked_Implementation()
 	PickupMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	PickupMesh->SetEnableGravity(false);
 	PickupMesh->SetConstraintMode(EDOFMode::None);
+	PickupState = PickupStateEnum::Picked;
 }
 
 void APickup::WasDropped_Implementation()
@@ -40,5 +41,17 @@ void APickup::WasDropped_Implementation()
 	PickupMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	PickupMesh->SetEnableGravity(true);
 	PickupMesh->SetConstraintMode(EDOFMode::Default);
+	PickupState = PickupStateEnum::Active;
+
+}
+
+void APickup::WasStored_Implementation()
+{
+	UE_LOG(LogTemp, Log, TEXT("Default Stored called"));
+	PickupMesh->SetSimulatePhysics(true);
+	PickupMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	PickupMesh->SetEnableGravity(true);
+	PickupMesh->SetConstraintMode(EDOFMode::Default);
+	PickupState = PickupStateEnum::Stored;
 
 }
