@@ -5,6 +5,14 @@
 #include "GameFramework/Actor.h"
 #include "Pickup.generated.h"
 
+UENUM(BlueprintType)
+enum class PickupStateEnum : uint8
+{
+	Active 	UMETA(DisplayName = "Active"),
+	Picked 	UMETA(DisplayName = "Picked"),
+	Stored	UMETA(DisplayName = "Stored")
+};
+
 UCLASS()
 class ADVENTUREMERCHANT_API APickup : public AActor
 {
@@ -20,6 +28,23 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+
+	//Light Effect Variables
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup|LightEffect")
+	float InitialLightIntensity;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup|LightEffect")
+	float LightIntensityRange;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup|LightEffect", meta = (ClampMin = "0.1"))
+	float LightIntensityChangeSpeed = 1.0f;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Pickup")
+	void WasPicked();
+	
+	void WasPicked_Implementation();
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -28,6 +53,11 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* PickupMesh;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
 	class UPointLightComponent* PickupLight;
+
+	//Maybe change to blueprint read&write?
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
+	PickupStateEnum PickupState;
+
 };

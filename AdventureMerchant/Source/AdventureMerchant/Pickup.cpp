@@ -19,6 +19,7 @@ APickup::APickup()
 	PickupLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("PickupLight"));
 	PickupLight->SetupAttachment(RootComponent);
 
+	PickupState = PickupStateEnum::Active;
 }
 
 // Called when the game starts or when spawned
@@ -33,6 +34,11 @@ void APickup::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-
+	PickupLight->SetIntensity(InitialLightIntensity + LightIntensityRange * cos(UGameplayStatics::GetRealTimeSeconds(GetWorld()) * LightIntensityChangeSpeed));
 }
 
+void APickup::WasPicked_Implementation()
+{
+	PickupLight->SetVisibility(false);
+	UE_LOG(LogTemp, Log, TEXT("Default Pickup called"));
+}
