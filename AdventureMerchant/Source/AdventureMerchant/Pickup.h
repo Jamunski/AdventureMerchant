@@ -24,38 +24,22 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
-
-
-	//Light Effect Variables
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup|LightEffect")
-	float InitialLightIntensity;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup|LightEffect")
-	float LightIntensityRange;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup|LightEffect", meta = (ClampMin = "0.1"))
-	float LightIntensityChangeSpeed = 1.0f;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Pickup")
 	void WasPicked();
 	
 	void WasPicked_Implementation();
 
-private:
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Pickup")
+	void WasDropped();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class USceneComponent* PickupTransform;
+	void WasDropped_Implementation();
+
+private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* PickupMesh;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
-	class UPointLightComponent* PickupLight;
-
 	//Maybe change to blueprint read&write?
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
 	PickupStateEnum PickupState;

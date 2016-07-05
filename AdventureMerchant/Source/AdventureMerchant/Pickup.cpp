@@ -8,16 +8,10 @@
 APickup::APickup()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	PickupTransform = CreateDefaultSubobject<USceneComponent>(TEXT("PickupTransform"));
-	RootComponent = PickupTransform;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	PickupMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PickupMesh"));
-	PickupMesh->SetupAttachment(RootComponent);
-
-	PickupLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("PickupLight"));
-	PickupLight->SetupAttachment(RootComponent);
+	RootComponent = PickupMesh;
 
 	PickupState = PickupStateEnum::Active;
 }
@@ -29,16 +23,20 @@ void APickup::BeginPlay()
 	
 }
 
-// Called every frame
-void APickup::Tick( float DeltaTime )
-{
-	Super::Tick( DeltaTime );
-
-	PickupLight->SetIntensity(InitialLightIntensity + LightIntensityRange * cos(UGameplayStatics::GetRealTimeSeconds(GetWorld()) * LightIntensityChangeSpeed));
-}
 
 void APickup::WasPicked_Implementation()
 {
-	PickupLight->SetVisibility(false);
 	UE_LOG(LogTemp, Log, TEXT("Default Pickup called"));
+	PickupMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	PickupMesh->SetEnableGravity(false);
+	PickupMesh->SetConstraintMode(EDOFMode::None);
+}
+
+void APickup::WasDropped_Implementation()
+{
+	UE_LOG(LogTemp, Log, TEXT("Default Drop called"));
+	PickupMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	PickupMesh->SetEnableGravity(true);
+	PickupMesh->SetConstraintMode(EDOFMode::Default);
+
 }
